@@ -1,4 +1,5 @@
 #include "../include/main.h"
+#include <unistd.h>
 
 void clean(Data *d)
 {
@@ -15,23 +16,23 @@ void clean(Data *d)
 
 int mainloop(Data *d)
 {
-    char *command = malloc(sizeof(char) * 512);
+    char *command = malloc(1024);
 
     while (d->isOpened) {
         command = readline(d->prompt->_str);
-        cout(command);
-        cout("\n");
         if (strcmp(command, "exit") == 0) {
             d->isOpened = 0;
+            break;
         }
+        analyze_cmd(command, d);
     }
-    cout("pute\n");
     free(command);
     return (0);
 }
 
 int main(const int ac, const char **av, const char **env)
 {
+    chdir(getcwd(NULL, 1024));
     Data *d = shell_setup(ac, av, env);
     mainloop(d);
     clean(d);

@@ -13,8 +13,8 @@ int putstr(const char *str, const int fd)
     if (str == NULL || str[0] == 0) {
         return (84);
     }
-    write(fd, str, slen(str));
-    return (0);
+    int a = write(fd, str, slen(str));
+    return (a == -1 ? 84 : 0);
 }
 
 int cout(const char *str)

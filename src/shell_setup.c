@@ -7,7 +7,7 @@ void set_default_values(Data *d)
 {
     d->prompt = Cstr("~> ");
     char *tmp = malloc(sizeof(char) * 512);
-    realpath("~", tmp);
+    realpath(getcwd(NULL, 1024), tmp);
     d->pwd = Cstr(tmp);
     char *tmp2 = malloc(sizeof(char) * 512);
     if (getcwd(tmp2, 512) == NULL) {
