@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <sys/wait.h>
 #include "./cstr.h"
 
 #define SYSTEM_ERROR -1
@@ -19,6 +20,8 @@ typedef struct {
     char *prompt;
     char *pwd;
     char *start_path;
+    int return_code;
+    char **args;
 } Data;
 
 #include "./lib.h"
@@ -36,3 +39,11 @@ void set_default_values(Data *);
 // analyze.c
 void analyze_cmd(char *, Data *);
 int update_prompt(Data *);
+
+// builtins.c
+int does_env_exist(Data *, char *);
+int change_directory(Data *, char **);
+int print_working_dir(Data *, char **);
+int display_env(Data *, char **);
+int unset_env(Data *, char **);
+int set_env(Data *, char **);

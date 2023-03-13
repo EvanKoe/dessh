@@ -13,6 +13,7 @@ int cerr(const char *);
 
 // my_str_to_word_array
 char **my_str_to_word_array(char *, char *);
+char **copy_array(char **, char **);
 
 // strcat
 char *scat(char *, char, char *);

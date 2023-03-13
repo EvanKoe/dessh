@@ -1,4 +1,5 @@
 #include "../include/main.h"
+#include <signal.h>
 #include <unistd.h>
 
 void clean(Data *d)
@@ -33,8 +34,9 @@ int mainloop(Data *d)
 
 void handler(int sig)
 {
-    if (sig == SIGINT) {
-        exit(0);
+    switch (sig) {
+        case (SIGINT): exit(0);
+        case (SIGSEGV): exit(cerr("Error: segmentation fault. Program stopped.\n"));
     }
     return;
 }

@@ -5,30 +5,6 @@
 
 #include <stdio.h>
 
-/*
-char **my_str_to_word_array(char *str, char del)
-{
-    int i = 0;
-
-    for (int j = 0; str[j] != 0; ++j) {
-        i += str[j] == del ? 1 : 0;
-    }
-    i++;
-    char **ret = malloc(sizeof(char *) * (i + 1));
-    char *token = strtok(str, &del);
-    if (token == NULL) {
-        return (NULL);
-    }
-    for (int j = 0; token != NULL; j++) {
-        ret[j] = malloc(slen(token) + 1);
-        ret[j] = strcpy(ret[j], token);
-        token = strtok(NULL, &del);
-    }
-    ret[i] = NULL;
-    return (ret);
-}
-    */
-
 int str_is_del(char c, char *del)
 {
     for (int i = 0; del[i] != '\0'; i++) {
@@ -71,4 +47,23 @@ char **my_str_to_word_array(char *str, char *del)
     }
     array[nb_row] = NULL;
     return (array);
+}
+
+char **copy_array(char **dest, char **src)
+{
+    if (src == NULL) {
+        return (NULL);
+    }
+    if (dest != NULL) {
+        free_word_array(dest);
+    }
+    int i = 0;
+    for (; src[i] != NULL; ++i);
+    dest = malloc(sizeof(char *) * i + 1);
+    for (int j = 0; src[j] != NULL; ++j) {
+        dest[j] = malloc(slen(src[j]) + 1);
+        dest[j] = strcpy(dest[j], src[j]);
+    }
+    dest[i] = NULL;
+    return (dest);
 }
