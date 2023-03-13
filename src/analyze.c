@@ -12,5 +12,16 @@ void analyze_cmd(char *command, Data *d)
             return;
         }
     }
+    free_word_array(a);
     return;
+}
+
+int update_prompt(Data *d)
+{
+    free(d->prompt);
+
+    d->prompt = malloc(slen(d->pwd) + 3);
+    d->prompt = strcpy(d->prompt, d->pwd);
+    d->prompt = strcat(d->prompt, "> ");
+    return (0);
 }

@@ -15,4 +15,13 @@ int cerr(const char *);
 char **my_str_to_word_array(char *, char *);
 
 // strcat
-char *scat(char *, char *);
+char *scat(char *, char, char *);
+
+// free_word_array
+void free_word_array(char **);
+void free_em_all(int, ...);
+
+// isHelp
+int is_help(char *);
+int is_help_array(char **);
+

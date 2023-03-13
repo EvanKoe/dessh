@@ -5,19 +5,18 @@
 
 void set_default_values(Data *d)
 {
-    d->prompt = Cstr("~> ");
-    char *tmp = malloc(sizeof(char) * 512);
-    realpath(getcwd(NULL, 1024), tmp);
-    d->pwd = Cstr(tmp);
-    char *tmp2 = malloc(sizeof(char) * 512);
-    if (getcwd(tmp2, 512) == NULL) {
-        cerr("Error: couldn't get working directory\n");
-        return;
-    }
-    d->start_path = Cstr(tmp2);
+    char *a = malloc(1024);
+    realpath(getcwd(NULL, 1024), a);
+
+    d->pwd = malloc(slen(a) + 1);
+    d->prompt = malloc(slen(a) + 3);
+    d->start_path = malloc(slen(a) + 1);
+    d->pwd = strcpy(d->pwd, a);
+    d->prompt = strcpy(d->prompt, a);
+    d->prompt = strcat(d->prompt, "> ");
+    d->start_path = strcpy(d->start_path, a);
     d->isOpened = 1;
-    free(tmp2);
-    free(tmp);
+    free(a);
 }
 
 int analyze_config_file(cstr *c, Data *d)

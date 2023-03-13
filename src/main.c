@@ -9,9 +9,9 @@ void clean(Data *d)
         }
     }
     free(d->env);
-    Cstr_destroy(d->prompt);
-    Cstr_destroy(d->pwd);
-    Cstr_destroy(d->start_path);
+    free(d->prompt);
+    free(d->pwd);
+    free(d->start_path);
 }
 
 int mainloop(Data *d)
@@ -19,20 +19,30 @@ int mainloop(Data *d)
     char *command = malloc(1024);
 
     while (d->isOpened) {
-        command = readline(d->prompt->_str);
-        if (strcmp(command, "exit") == 0) {
+        command = readline(d->prompt);
+        if (command == NULL || strcmp(command, "exit") == 0) {
             d->isOpened = 0;
             break;
         }
         analyze_cmd(command, d);
+        update_prompt(d);
     }
     free(command);
     return (0);
 }
 
+void handler(int sig)
+{
+    if (sig == SIGINT) {
+        exit(0);
+    }
+    return;
+}
+
 int main(const int ac, const char **av, const char **env)
 {
     chdir(getcwd(NULL, 1024));
+    signal(SIGINT, handler);
     Data *d = shell_setup(ac, av, env);
     mainloop(d);
     clean(d);

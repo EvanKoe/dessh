@@ -1,6 +1,6 @@
 #include "../include/lib.h"
 
-char *scat(char *str1, char *str2)
+char *scat(char *str1, char c, char *str2)
 {
     if (str1 == NULL || str2 == NULL) {
         return (NULL);
@@ -11,7 +11,7 @@ char *scat(char *str1, char *str2)
     for (i = 0; str1[i] != 0; ++i) {
         dest[i] = str1[i];
     }
-    dest[i++] = '/';
+    dest[i++] = c;
     for (int j = 0; str2[j] != 0; ++i, ++j) {
         dest[i] = str2[j];
     }

@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <signal.h>
 #include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -15,9 +16,9 @@
 typedef struct {
     int isOpened;
     char **env;
-    cstr *prompt;
-    cstr *pwd;
-    cstr *start_path;
+    char *prompt;
+    char *pwd;
+    char *start_path;
 } Data;
 
 #include "./lib.h"
@@ -34,3 +35,4 @@ void set_default_values(Data *);
 
 // analyze.c
 void analyze_cmd(char *, Data *);
+int update_prompt(Data *);

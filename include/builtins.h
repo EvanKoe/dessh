@@ -2,6 +2,8 @@
 
 #include "main.h"
 
+#define HOMEPATH "/home/ekoehler/\0"
+
 typedef struct {
     const char *cmd;
     int (*callback)(Data *, char **);
