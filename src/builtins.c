@@ -83,14 +83,19 @@ int set_env(Data *d, char **cmd)
     }
     int i = does_env_exist(d, cmd[1]);
     size_t size = 0;
+    size_t len = 0;
+    for (; d->env[len] != NULL; ++len);
+    char **cpy = NULL;
 
     if (i == -1) {
+        cpy = copy_array(cpy, d->env);
         for (i = 0; d->env[i] != NULL; ++i);
         size = slen(cmd[1]) + slen(cmd[2]) + 2;
         d->env[i] = malloc(size);
         d->env[i] = strcpy(d->env[i], cmd[1]);
         d->env[i] = scat(cmd[1], '=', cmd[2]);
         d->env[i + 1] = NULL;
+        d->env = copy_array(d->env, cpy);
     } else {
         free(d->env[i]);
         d->env[i] = malloc(slen(cmd[1]) + slen(cmd[2]) + 2);

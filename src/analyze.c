@@ -1,20 +1,24 @@
 #include "../include/main.h"
+#include <signal.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
-int fork_and_launch(Data *d, char *command)
+int fork_and_launch(Data *d, char *command, char **args)
 {
     int pid = fork();
     int ret = 0;
 
     if (pid == 0) {
-        //TODO couldn't get d->args
-        return (execve(command, d->args, d->env));
+        return (execve(command, args, d->env));
     } else if (pid == -1) {
         return (cerr("Error: couldn't fork program.\n"));
     } else {
         wait(&ret);
+        kill(pid, SIGTERM);
         d->return_code = ret;
+        if (ret != 0) {
+            printf("Program exited with code %d\n", ret);
+        }
         return (0);
     }
 }
@@ -22,12 +26,12 @@ int fork_and_launch(Data *d, char *command)
 int execute_from_path(Data *d, char **cmd, int is_dot_slash)
 {
     if (is_dot_slash) {
-        copy_array(d->args, &(cmd[1]));
+        // copy_array(d->args, &(cmd[1]));
         for (int i = 0; d->args[i] != NULL; ++i) {
             printf("[%s, ", d->args[i]);
         }
         cout("]\n");
-        return (fork_and_launch(d, cmd[0]));
+        return (fork_and_launch(d, cmd[0], cmd));
     }
     int i = does_env_exist(d, "PATH");
     if (i == -1 || cmd == NULL || cmd[0] == NULL) {
@@ -40,7 +44,7 @@ int execute_from_path(Data *d, char **cmd, int is_dot_slash)
         tmp = malloc(1024);
         tmp = scat(paths[i], '/', cmd[0]);
         if (access(tmp, F_OK) != -1) {
-            return (fork_and_launch(d, tmp));
+            return (fork_and_launch(d, tmp, cmd));
         }
         free(tmp);
     }
